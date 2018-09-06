@@ -6,17 +6,27 @@ module.exports = class LoginController {
   }
 
   initRoutes(router) {
-    // router.post('/clientLogin', this.getLogin.bind(this));
-    router.post('/clientLogin');
+    router.post('/clientLogin', function(data) {
+      service.post()
+      if (typeof data === 'string') {
+        return 'success!!'
+      } else {
+        return 'Bummer Man!'
+      }  
+    });
   }
+  
+  // initRoutes(router) {
+  //   router.post('/clientLogin', this.getLogin.bind(this));
+  // }
 
-  getLogin(data) {
-    this.service(data);
+  // getLogin(data) {
+  //   this.service.post(data);
 
-    if (typeof data === 'string') {
-      return 'success!!'
-    } else {
-      return 'Bummer Man!'
-    }
-  }
+  //   if (typeof data === 'string') {
+  //     return 'success!!'
+  //   } else {
+  //     return 'Bummer Man!'
+  //   }
+  // }
 }

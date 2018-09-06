@@ -6,9 +6,13 @@ const loginController = require('../controllers/login.controller')
 describe.only('LoginController', () => {
   let subject
   let serviceStub;
+  let fakeService;
   
   beforeEach(() => {
-    serviceStub = sinon.stub();
+    fakeService = {
+      post: (data) => {},
+    }
+    serviceStub = sinon.stub(fakeService);
     subject = new loginController(serviceStub)
   })
 
@@ -16,13 +20,7 @@ describe.only('LoginController', () => {
     sinon.restore()
   })
 
-  describe('constructor', () => {
-    it('constructs with service', () => {
-      expect(subject.service).to.equal(serviceStub);
-    })
-  })
-
-  describe('Initializing routes', () => {
+  describe.only('Initializing routes', () => {
     let router
 
     beforeEach(() => {
@@ -32,11 +30,14 @@ describe.only('LoginController', () => {
       subject.initRoutes(router)
     })
 
-    it('calls router.post method with /clientLogin route', ()=> {
+    it('calls router.post method with "/clientLogin" route', ()=> {
       expect(router.post.args[0][0]).to.equal('/clientLogin')
     })
 
+    // not sure how to test & check for a bound function
+    it('calls router.post method with getLogin')
   })
+
   describe('logging in', () => {
     let getLoginSpy;
     let loginData;
@@ -52,36 +53,37 @@ describe.only('LoginController', () => {
       beforeEach(() => {
         loginData = 'this right here, is a string'
       })
+
       afterEach(() => {
         sinon.restore();
         loginData = null;
       })
-      it('makes a request to the loginService with loginData', () => {
+
+      it('makes a post request to the loginService with loginData', () => {
         subject.getLogin(loginData);
-        expect(serviceStub.args[0][0]).to.equal(loginData);
-        expect(serviceStub.calledOnce).to.be.true
+        expect(serviceStub.post.args[0][0]).to.equal(loginData);
+        expect(serviceStub.post.resolves)
       })
 
       it('returns string that says excellent data', () => {
         subject.getLogin(loginData);
         expect(getLoginSpy.returnValues[0]).to.equal('success!!')
       })
-
     })
 
     describe('with bogus credentials', () => {
       beforeEach(() => {
         loginData = 666
       })
+
       afterEach(() => {
         sinon.restore();
         loginData = null
       })
 
-      it('makes a request to the loginService with loginData', () => {
+      it('makes a post request to the loginService with loginData', () => {
         subject.getLogin(loginData);
-        expect(serviceStub.args[0][0]).to.equal(loginData);
-        expect(serviceStub.calledOnce).to.be.true
+        expect(serviceStub.post.args[0][0]).to.equal(loginData);
       })
 
       it('returns "Bummer Man!!" if integers are passed', () => {
