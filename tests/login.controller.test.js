@@ -11,6 +11,7 @@ describe.only('LoginController', () => {
   beforeEach(() => {
     fakeService = {
       post: data => {},
+      get: () => {},
     }
     serviceStub = sinon.stub(fakeService);
     subject = new loginController(serviceStub)
@@ -102,10 +103,9 @@ describe.only('LoginController', () => {
       sinon.restore();
     })
 
-    it('returns argument passed', () => {
-      const data = 'Arya the dog'
-      subject.getDogs(data);
-      expect(getDogsSpy.returnValues[0]).to.equal('Arya the dog')
+    it('makes a get request to the service', () => {
+      subject.getDogs();
+      expect(serviceStub.get.callCount).to.equal(1);
     })
   })
 })
