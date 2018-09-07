@@ -109,6 +109,15 @@ describe.only('LoginController', () => {
       subject.getDogs();
       expect(serviceStub.get.callCount).to.equal(1);
     });
+
+    it('returns a resolved a promise', () => {
+      serviceStub.get.resolves('corndog')
+      subject.getDogs()
+      console.log('====================');
+      console.log('serviceStub.get.returnValues', serviceStub.get.returnValues);
+      console.log('====================');
+      expect(serviceStub.get.returnValues[0]).to.equal('corndog')
+    });
   });
 });
 
