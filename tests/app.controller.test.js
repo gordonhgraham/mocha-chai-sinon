@@ -1,7 +1,7 @@
 const expect = require('chai').expect;
 const sinon = require('sinon');
 
-const indexPage = require('../../controllers/app.controller');
+const indexPage = require('../controllers/app.controller');
 
 describe('app Controller', function () {
   let user;

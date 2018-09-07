@@ -3,7 +3,7 @@ const sinon = require('sinon');
 
 const fancyController = require('../controllers/fancy.controller');
 
-describe.only('FancyController', () => {
+describe('FancyController', () => {
   let subject;
   let serviceStub;
   let fakeService;
