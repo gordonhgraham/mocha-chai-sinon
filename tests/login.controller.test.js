@@ -93,10 +93,10 @@ describe.only('LoginController', () => {
   })
 
   describe('getting data', () => {
-    let getDataSpy;
+    let getDogsSpy;
 
     beforeEach(() => {
-      getDataSpy = sinon.spy(subject, 'getData');
+      getDogsSpy = sinon.spy(subject, 'getDogs');
     })
     afterEach(() => {
       sinon.restore();
@@ -104,8 +104,8 @@ describe.only('LoginController', () => {
 
     it('returns argument passed', () => {
       const data = 'Arya the dog'
-      subject.getData(data);
-      expect(getDataSpy.returnValues[0]).to.equal('Arya the dog')
+      subject.getDogs(data);
+      expect(getDogsSpy.returnValues[0]).to.equal('Arya the dog')
     })
   })
 })

@@ -13,7 +13,7 @@ module.exports = class LoginController {
     return this.service.post(data);
   }
 
-  getData(data) {
+  getDogs(data) {
     return data
   }
 }
