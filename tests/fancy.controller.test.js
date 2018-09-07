@@ -1,9 +1,9 @@
 const { expect } = require('chai');
 const sinon = require('sinon');
 
-const loginController = require('../controllers/login.controller');
+const fancyController = require('../controllers/fancy.controller');
 
-describe.only('LoginController', () => {
+describe.only('FancyController', () => {
   let subject;
   let serviceStub;
   let fakeService;
@@ -14,7 +14,7 @@ describe.only('LoginController', () => {
       get: () => {},
     };
     serviceStub = sinon.stub(fakeService);
-    subject = new loginController(serviceStub);
+    subject = new fancyController(serviceStub);
   });
 
   afterEach(() => {
@@ -31,12 +31,10 @@ describe.only('LoginController', () => {
       subject.initRoutes(router);
     });
 
-    it('calls router.post method with "/clientLogin" route', ()=> {
+    it('calls router.post method with "/clientLogin" route and handler', ()=> {
       expect(router.post.args[0][0]).to.equal('/clientLogin');
+      expect(router.post.args[0][1]).to.be.a('function');
     });
-
-    // not sure how to test & check for a bound function
-    it('calls router.post method with getLogin');
   });
 
   describe('logging in', () => {
@@ -110,12 +108,9 @@ describe.only('LoginController', () => {
       expect(serviceStub.get.callCount).to.equal(1);
     });
 
-    it('returns a resolved a promise', () => {
-      serviceStub.get.resolves('corndog')
-      subject.getDogs()
-      console.log('====================');
-      console.log('serviceStub.get.returnValues', serviceStub.get.returnValues);
-      console.log('====================');
+    it('returns data', () => {
+      serviceStub.get.returns('corndog');
+      subject.getDogs();
       expect(serviceStub.get.returnValues[0]).to.equal('corndog')
     });
   });

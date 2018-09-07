@@ -1,4 +1,4 @@
-module.exports = class LoginController {
+module.exports = class FancyController {
   constructor(service) {
     this.service = service;
   }
