@@ -1,10 +1,10 @@
-const { expect } = require('chai')
-const sinon = require('sinon')
+const { expect } = require('chai');
+const sinon = require('sinon');
 
-const loginController = require('../controllers/login.controller')
+const loginController = require('../controllers/login.controller');
 
 describe.only('LoginController', () => {
-  let subject
+  let subject;
   let serviceStub;
   let fakeService;
   
@@ -12,32 +12,32 @@ describe.only('LoginController', () => {
     fakeService = {
       post: data => {},
       get: () => {},
-    }
+    };
     serviceStub = sinon.stub(fakeService);
-    subject = new loginController(serviceStub)
-  })
+    subject = new loginController(serviceStub);
+  });
 
   afterEach(() => {
-    sinon.restore()
-  })
+    sinon.restore();
+  });
 
   describe('Initializing routes', () => {
-    let router
+    let router;
 
     beforeEach(() => {
       router = {
-        post: sinon.spy()
-      }
-      subject.initRoutes(router)
-    })
+        post: sinon.spy(),
+      };
+      subject.initRoutes(router);
+    });
 
     it('calls router.post method with "/clientLogin" route', ()=> {
-      expect(router.post.args[0][0]).to.equal('/clientLogin')
-    })
+      expect(router.post.args[0][0]).to.equal('/clientLogin');
+    });
 
     // not sure how to test & check for a bound function
-    it('calls router.post method with getLogin')
-  })
+    it('calls router.post method with getLogin');
+  });
 
   describe('logging in', () => {
     let getLoginSpy;
@@ -45,107 +45,73 @@ describe.only('LoginController', () => {
 
     beforeEach(() => {
       getLoginSpy = sinon.spy(subject, 'getLogin');
-    })
+    });
+
     afterEach(() => {
       sinon.restore();
-    })
-    
+    });
+
     describe('with successful credentials', () => {
       beforeEach(() => {
-        loginData = 'this right here, is a string'
-        serviceStub.post.returns('success!!')
+        loginData = 'this right here, is a string';
+        serviceStub.post.returns('success!!');
         subject.getLogin(loginData);
-      })
+      });
 
       afterEach(() => {
         sinon.restore();
         loginData = null;
-      })
+      });
 
       it('makes a post request to the loginService with loginData', () => {
         expect(serviceStub.post.args[0][0]).to.equal(loginData);
-      })
+      });
 
       it('returns a string that says "success!!"', () => {
-        expect(getLoginSpy.returnValues[0]).to.equal('success!!')
-      })
-    })
+        expect(getLoginSpy.returnValues[0]).to.equal('success!!');
+      });
+    });
 
     describe('with bogus credentials', () => {
       beforeEach(() => {
-        loginData = 666
-        serviceStub.post.returns('Bummer Man!')
-        subject.getLogin(loginData)
-      })
+        loginData = 666;
+        serviceStub.post.returns('Bummer Man!');
+        subject.getLogin(loginData);
+      });
 
       afterEach(() => {
         sinon.restore();
-        loginData = null
-      })
+        loginData = null;
+      });
 
       it('makes a post request to the loginService with loginData', () => {
         expect(serviceStub.post.args[0][0]).to.equal(loginData);
-      })
+      });
 
       it('returns a string that says "Bummer Man!!"', () => {
         expect(getLoginSpy.returnValues[0]).to.equal('Bummer Man!');
-      })
-    })
-  })
+      });
+    });
+  });
 
-  describe('getting data', () => {
+  describe('get dogs', () => {
     let getDogsSpy;
 
     beforeEach(() => {
       getDogsSpy = sinon.spy(subject, 'getDogs');
-    })
+    });
+    
     afterEach(() => {
       sinon.restore();
-    })
+    });
 
     it('makes a get request to the service', () => {
       subject.getDogs();
       expect(serviceStub.get.callCount).to.equal(1);
-    })
-  })
-})
+    });
+  });
+});
 
 // console.log('====================');
-// console.log('getLoginSpy.returnValues', getLoginSpy.returnValues);
+// console.log('XXXXXXXXX', XXXXXXXXX);
 // console.log('====================');
-
-/* 
-
-describe('The constructor', () => {
-  it('constructs correctly', () => {
-    subject = new ClientLoginController('service')
-    expect(subject.clientLoginService).to.equal('service')
-  })
-})
-
-describe('initializing the routes', () => {
-  beforeEach(() => {
-    subject.initRoutes(router)
-  })
-
-  it('initializes the router post method with clientlogin endpoint', () => {
-    expect(routerPostSpy.calledOnce).to.equal(true)
-    expect(routerPostSpy.args[0][0]).to.equal('/clientlogin')
-  })
-
-  it('initializes the router post method with getLogin', () => {
-    expect(routerPostSpy.calledOnce).to.equal(true)
-
-    console.log('====================')
-    console.log('arguments passed to router.post: ', routerPostSpy.args[0][1])
-    console.log('getLoginStub: ', getLoginStub)
-    console.log('====================')
-
-    expect(routerPostSpy.args[0][1]).to.equal(
-      getLoginStub.bind(this)
-    )
-  })
-})
-})
-
-*/

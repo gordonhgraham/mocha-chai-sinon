@@ -2,7 +2,7 @@ const axios = require('axios');
 
 module.exports = class LoginController {
   constructor(service) {
-    this.service = service
+    this.service = service;
   }
 
   initRoutes(router) {
