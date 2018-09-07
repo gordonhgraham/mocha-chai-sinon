@@ -10,7 +10,7 @@ describe.only('LoginController', () => {
   
   beforeEach(() => {
     fakeService = {
-      post: (data) => {},
+      post: data => {},
     }
     serviceStub = sinon.stub(fakeService);
     subject = new loginController(serviceStub)
@@ -20,7 +20,7 @@ describe.only('LoginController', () => {
     sinon.restore()
   })
 
-  describe.only('Initializing routes', () => {
+  describe('Initializing routes', () => {
     let router
 
     beforeEach(() => {
@@ -52,6 +52,8 @@ describe.only('LoginController', () => {
     describe('with successful credentials', () => {
       beforeEach(() => {
         loginData = 'this right here, is a string'
+        serviceStub.post.returns('success!!')
+        subject.getLogin(loginData);
       })
 
       afterEach(() => {
@@ -60,13 +62,10 @@ describe.only('LoginController', () => {
       })
 
       it('makes a post request to the loginService with loginData', () => {
-        subject.getLogin(loginData);
         expect(serviceStub.post.args[0][0]).to.equal(loginData);
-        expect(serviceStub.post.resolves)
       })
 
-      it('returns string that says excellent data', () => {
-        subject.getLogin(loginData);
+      it('returns a string that says "success!!"', () => {
         expect(getLoginSpy.returnValues[0]).to.equal('success!!')
       })
     })
@@ -74,6 +73,8 @@ describe.only('LoginController', () => {
     describe('with bogus credentials', () => {
       beforeEach(() => {
         loginData = 666
+        serviceStub.post.returns('Bummer Man!')
+        subject.getLogin(loginData)
       })
 
       afterEach(() => {
@@ -82,14 +83,29 @@ describe.only('LoginController', () => {
       })
 
       it('makes a post request to the loginService with loginData', () => {
-        subject.getLogin(loginData);
         expect(serviceStub.post.args[0][0]).to.equal(loginData);
       })
 
-      it('returns "Bummer Man!!" if integers are passed', () => {
-        subject.getLogin(loginData)
+      it('returns a string that says "Bummer Man!!"', () => {
         expect(getLoginSpy.returnValues[0]).to.equal('Bummer Man!');
       })
+    })
+  })
+
+  describe('getting data', () => {
+    let getDataSpy;
+
+    beforeEach(() => {
+      getDataSpy = sinon.spy(subject, 'getData');
+    })
+    afterEach(() => {
+      sinon.restore();
+    })
+
+    it('returns argument passed', () => {
+      const data = 'Arya the dog'
+      subject.getData(data);
+      expect(getDataSpy.returnValues[0]).to.equal('Arya the dog')
     })
   })
 })
